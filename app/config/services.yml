@@ -4,6 +4,11 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    legacy.handler:
+        class: AppBundle\Http\LegacyHandler
+        arguments: ['@http_kernel', "%legacy.root_dir%", '@debug.stopwatch', '@security.token_storage']
+
+    legacy.http_kernel:
+        class: AppBundle\HttpKernel\LegacyHttpKernel
+        decorates: http_kernel
+        arguments: ['@legacy.http_kernel.inner']
